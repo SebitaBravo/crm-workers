@@ -19,9 +19,12 @@ const TopBar = () => {
         </Link>
       </div>
       <div className="relative">
-        <button className="text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-500">
+        <Link
+          to="/login"
+          className="text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-500"
+        >
           Inicio de sesión
-        </button>
+        </Link>
       </div>
     </div>
   );

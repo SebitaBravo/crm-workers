@@ -3,6 +3,7 @@ import AdminPage from "./pages/AdminPage";
 import ChiefPage from "./pages/ChiefPage";
 import WorkerPage from "./pages/WorkerPage.jsx";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/jefe" element={<ChiefPage />} />
         <Route path="/trabajador" element={<WorkerPage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
