@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS trabajador (
     salario INT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS rol (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -23,12 +28,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     FOREIGN KEY (rol_id) REFERENCES rol(id)
 );
 
-CREATE TABLE IF NOT EXISTS rol (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS contacto_emergencia(
+CREATE TABLE IF NOT EXISTS contacto_emergencia (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS contacto_emergencia(
     FOREIGN KEY (trabajador_id) REFERENCES trabajador(id)
 );
 
-CREATE TABLE IF NOT EXISTS carga_familiar(
+CREATE TABLE IF NOT EXISTS carga_familiar (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
