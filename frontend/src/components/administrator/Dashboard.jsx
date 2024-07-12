@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaChartPie, FaEdit, FaTrash } from "react-icons/fa";
+import { Pie } from "react-chartjs-2";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { MdOutlineSettingsPhone } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
+import "chart.js/auto"; // Importación necesaria para evitar problemas con Chart.js
 
 function DashboardContent() {
   const [empleados, setEmpleados] = useState([]);
+  const [cargos, setCargos] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -16,6 +19,13 @@ function DashboardContent() {
           "http://localhost:3000/api/trabajadores"
         );
         setEmpleados(response.data);
+
+        // Calcular la cantidad de cada cargo
+        const cargosCount = response.data.reduce((acc, empleado) => {
+          acc[empleado.cargo] = (acc[empleado.cargo] || 0) + 1;
+          return acc;
+        }, {});
+        setCargos(cargosCount);
       } catch (error) {
         console.error("Error al obtener los empleados:", error);
       }
@@ -32,6 +42,22 @@ function DashboardContent() {
     empleado.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const pieData = {
+    labels: Object.keys(cargos),
+    datasets: [
+      {
+        data: Object.values(cargos),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#8E44AD",
+          "#2ECC71",
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col w-full p-6 space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -40,12 +66,7 @@ function DashboardContent() {
             <h2 className="text-lg font-semibold text-gray-700">Cargos</h2>
           </div>
           <div className="mt-4">
-            <FaChartPie className="w-full h-32 text-purple-600" />
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-purple-600">Undefined</span>
-              <span className="text-blue-600">Undefined</span>
-              <span className="text-pink-600">Undefined</span>
-            </div>
+            <Pie data={pieData} />
           </div>
         </div>
       </div>
