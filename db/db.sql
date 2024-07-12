@@ -48,8 +48,3 @@ CREATE TABLE IF NOT EXISTS carga_familiar(
     trabajador_id INT NOT NULL,
     FOREIGN KEY (trabajador_id) REFERENCES trabajador(id)
 );
-
-INSERT INTO rol (nombre) VALUES 
-('Trabajador'),
-('Jefe de RRHH'),
-('Administrador de RRHH');
