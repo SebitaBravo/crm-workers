@@ -10,7 +10,7 @@ function Header() {
           src="https://via.placeholder.com/150"
           alt="profile"
         />
-        <div className="text-gray-700">Sebastian</div>
+        <div className="text-gray-700">Undefinded</div>
       </div>
     </div>
   );
