@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Pie } from "react-chartjs-2";
+import { Pie, Bar } from "react-chartjs-2";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { MdOutlineSettingsPhone } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
-import "chart.js/auto"; // Importación necesaria para evitar problemas con Chart.js
+import "chart.js/auto";
 
 function DashboardContent() {
   const [empleados, setEmpleados] = useState([]);
   const [cargos, setCargos] = useState({});
+  const [salarios, setSalarios] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Función para obtener los empleados desde el backend
     const fetchEmpleados = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/trabajadores"
+          "http://localhost:3001/api/trabajadores"
         );
         setEmpleados(response.data);
 
@@ -26,6 +26,12 @@ function DashboardContent() {
           return acc;
         }, {});
         setCargos(cargosCount);
+
+        const totalSalarios = response.data.reduce(
+          (acc, empleado) => acc + empleado.salario,
+          0
+        );
+        setSalarios(totalSalarios);
       } catch (error) {
         console.error("Error al obtener los empleados:", error);
       }
@@ -58,6 +64,17 @@ function DashboardContent() {
     ],
   };
 
+  const barData = {
+    labels: ["Salarios"],
+    datasets: [
+      {
+        label: "Gastos en Salarios",
+        data: [salarios],
+        backgroundColor: ["#FF6384"],
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col w-full p-6 space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -67,6 +84,16 @@ function DashboardContent() {
           </div>
           <div className="mt-4">
             <Pie data={pieData} />
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-700">
+              Gastos en Salarios
+            </h2>
+          </div>
+          <div className="mt-4">
+            <Bar data={barData} />
           </div>
         </div>
       </div>
