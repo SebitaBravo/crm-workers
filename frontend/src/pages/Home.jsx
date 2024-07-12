@@ -1,4 +1,4 @@
-import TopBar from "../components/worker/TopBar";
+import TopBar from "../components/TopBar";
 
 function Home() {
   return (
