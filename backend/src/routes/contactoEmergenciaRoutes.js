@@ -4,6 +4,5 @@ const contactoEmergenciaController = require('../controllers/contactoEmergenciaC
 
 router.get('/contactos-emergencia', contactoEmergenciaController.getAllContactosEmergencia);
 router.post('/contactos-emergencia', contactoEmergenciaController.createContactoEmergencia);
-// Agrega más rutas para actualizar y eliminar contactos de emergencia
 
 module.exports = router;

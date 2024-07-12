@@ -19,5 +19,3 @@ exports.createContactoEmergencia = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Agrega más funciones para actualizar y eliminar contactos de emergencia

@@ -19,5 +19,3 @@ exports.createUsuario = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Agrega más funciones para actualizar y eliminar usuarios
