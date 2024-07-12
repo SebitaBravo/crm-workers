@@ -14,6 +14,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/rol" element={<Rol />} />
         <Route path="/jefe" element={<ChiefPage />} />
@@ -21,7 +22,6 @@ function App() {
         <Route path="/trabajador/formulario" element={<WorkerForm />} />
         <Route path="/trabajador/contacto" element={<EmergencyForm />} />
         <Route path="/trabajador/familia" element={<FamilyForm />} />
-        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
