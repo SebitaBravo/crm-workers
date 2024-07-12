@@ -8,7 +8,6 @@ const cargaFamiliarRoutes = require('./routes/cargaFamiliarRoutes');
 
 app.use(express.json());
 
-
 app.use('/api', trabajadorRoutes);
 app.use('/api', usuarioRoutes);
 app.use('/api', rolRoutes);
