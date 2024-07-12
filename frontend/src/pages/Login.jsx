@@ -3,9 +3,11 @@ import TopBar from "../components/login/TopBar";
 
 function Login() {
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleAutoComplete = (name) => {
+  const handleAutoComplete = (name, password) => {
     setUsername(name);
+    setPassword(password);
   };
 
   return (
@@ -41,6 +43,8 @@ function Login() {
                 type="password"
                 id="password"
                 className="w-full p-2 border border-gray-300 rounded"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <button
@@ -65,23 +69,23 @@ function Login() {
           <p className="mt-2">
             <span
               className="text-blue-500 cursor-pointer"
-              onClick={() => handleAutoComplete("trabajador1")}
+              onClick={() => handleAutoComplete("trabajador1", "trabajador")}
             >
-              trabajador
+              Trabajador
             </span>
             <br />
             <span
               className="text-blue-500 cursor-pointer"
-              onClick={() => handleAutoComplete("administrador")}
+              onClick={() => handleAutoComplete("administrador", "admin")}
             >
               Administrador
             </span>
             <br />
             <span
               className="text-blue-500 cursor-pointer"
-              onClick={() => handleAutoComplete("jefe")}
+              onClick={() => handleAutoComplete("jefe", "jefe")}
             >
-              jefe
+              Jefe
             </span>
           </p>
         </div>
