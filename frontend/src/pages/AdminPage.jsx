@@ -1,6 +1,6 @@
 import Sidebar from "../components/administrator/Sidebar";
 import Header from "../components/Header";
-import DashboardContent from "../components/administrator/DashboardContent";
+import DashboardContent from "../components/administrator/Dashboard";
 
 function AdminPage() {
   return (
