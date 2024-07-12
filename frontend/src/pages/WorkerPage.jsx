@@ -1,7 +1,13 @@
+import Sidebar from "../components/administrator/Sidebar";
+import Header from "../components/Header";
+
 function WorkerPage() {
   return (
-    <div>
-      <h1>Worker Page</h1>
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+      <Sidebar />
+      <div className="flex flex-col flex-grow">
+        <Header />
+      </div>
     </div>
   );
 }
