@@ -1,4 +1,4 @@
-import Sidebar from "../components/administrator/Sidebar";
+import Sidebar from "../components/worker/Sidebar";
 import Header from "../components/Header";
 
 function WorkerPage() {
