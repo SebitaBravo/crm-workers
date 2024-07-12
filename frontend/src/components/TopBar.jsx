@@ -14,7 +14,7 @@ const TopBar = () => {
         <Link to="/jefe" className=" hover:text-gray-400">
           Jefe
         </Link>
-        <Link to="/jefe" className=" hover:text-gray-400">
+        <Link to="/admin" className=" hover:text-gray-400">
           Admin
         </Link>
       </div>
