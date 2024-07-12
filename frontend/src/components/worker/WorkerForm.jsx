@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "../Header";
 
@@ -9,25 +10,35 @@ function EmpleadoForm() {
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el envío del formulario, por ejemplo, hacer una petición POST a tu servidor
-    console.log("Nuevo empleado:", {
-      nombre,
-      apellido,
-      sexo,
-      direccion,
-      telefono,
-      fechaNacimiento,
-    });
-    // Resetear el formulario
-    setNombre("");
-    setApellido("");
-    setSexo("");
-    setDireccion("");
-    setTelefono("");
-    setFechaNacimiento("");
+    setError("");
+    setMessage("");
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/empleados", {
+        nombre,
+        apellido,
+        sexo,
+        direccion,
+        telefono,
+        fecha_nacimiento: fechaNacimiento,
+      });
+
+      setMessage("Empleado agregado exitosamente");
+      // Resetear el formulario
+      setNombre("");
+      setApellido("");
+      setSexo("");
+      setDireccion("");
+      setTelefono("");
+      setFechaNacimiento("");
+    } catch (error) {
+      setError("Error al agregar el empleado");
+    }
   };
 
   return (
@@ -40,6 +51,8 @@ function EmpleadoForm() {
             <h2 className="text-2xl font-bold mb-4">
               Ingresar Datos del Empleado
             </h2>
+            {message && <p className="text-green-500">{message}</p>}
+            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label

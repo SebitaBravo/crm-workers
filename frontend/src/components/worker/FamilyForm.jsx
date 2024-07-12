@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "../Header";
 
@@ -8,23 +9,36 @@ function CargasFamiliaresForm() {
   const [parentesco, setParentesco] = useState("");
   const [sexo, setSexo] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el envío del formulario, por ejemplo, hacer una petición POST a tu servidor
-    console.log("Nueva carga familiar:", {
-      nombre,
-      apellido,
-      parentesco,
-      sexo,
-      fechaNacimiento,
-    });
-    // Resetear el formulario
-    setNombre("");
-    setApellido("");
-    setParentesco("");
-    setSexo("");
-    setFechaNacimiento("");
+    setError("");
+    setMessage("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/cargas-familiares",
+        {
+          nombre,
+          apellido,
+          parentesco,
+          sexo,
+          fecha_nacimiento: fechaNacimiento,
+        }
+      );
+
+      setMessage("Carga familiar agregada exitosamente");
+      // Resetear el formulario
+      setNombre("");
+      setApellido("");
+      setParentesco("");
+      setSexo("");
+      setFechaNacimiento("");
+    } catch (error) {
+      setError("Error al agregar la carga familiar");
+    }
   };
 
   return (
@@ -35,6 +49,8 @@ function CargasFamiliaresForm() {
         <div className="flex flex-col items-center justify-center h-full bg-gray-100 p-4">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-2xl font-bold mb-4">Agregar Carga Familiar</h2>
+            {message && <p className="text-green-500">{message}</p>}
+            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label

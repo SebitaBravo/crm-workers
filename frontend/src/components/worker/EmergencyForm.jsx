@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "../Header";
 
@@ -7,21 +8,34 @@ function ContactoEmergenciaForm() {
   const [apellido, setApellido] = useState("");
   const [relacion, setRelacion] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el envío del formulario, por ejemplo, hacer una petición POST a tu servidor
-    console.log("Nuevo contacto de emergencia:", {
-      nombre,
-      apellido,
-      relacion,
-      telefono,
-    });
-    // Resetear el formulario
-    setNombre("");
-    setApellido("");
-    setRelacion("");
-    setTelefono("");
+    setError("");
+    setMessage("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/contactos-emergencia",
+        {
+          nombre,
+          apellido,
+          relacion,
+          telefono,
+        }
+      );
+
+      setMessage("Contacto de emergencia agregado exitosamente");
+      // Resetear el formulario
+      setNombre("");
+      setApellido("");
+      setRelacion("");
+      setTelefono("");
+    } catch (error) {
+      setError("Error al agregar el contacto de emergencia");
+    }
   };
 
   return (
@@ -34,6 +48,8 @@ function ContactoEmergenciaForm() {
             <h2 className="text-2xl font-bold mb-4">
               Agregar Contacto de Emergencia
             </h2>
+            {message && <p className="text-green-500">{message}</p>}
+            {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label
