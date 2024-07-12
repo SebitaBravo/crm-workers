@@ -1,8 +1,37 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { FaChartPie, FaEdit, FaTrash } from "react-icons/fa";
 import { MdOutlineSettingsPhone } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
 
 function DashboardContent() {
+  const [empleados, setEmpleados] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    // Función para obtener los empleados desde el backend
+    const fetchEmpleados = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/trabajadores"
+        );
+        setEmpleados(response.data);
+      } catch (error) {
+        console.error("Error al obtener los empleados:", error);
+      }
+    };
+
+    fetchEmpleados();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredEmpleados = empleados.filter((empleado) =>
+    empleado.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col w-full p-6 space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -22,11 +51,12 @@ function DashboardContent() {
       </div>
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <div>
-          {" "}
           <input
             type="text"
             className="w-full py-2 pl-10 pr-4 bg-gray-100 rounded-md"
             placeholder="Buscar empleados"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
         </div>
         <br />
@@ -61,39 +91,41 @@ function DashboardContent() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  Antonella Coñoepan
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  Base de datos
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  20-10-2021
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <button className="text-blue-500">
-                    <MdOutlineSettingsPhone />
-                  </button>
-                  {"  "}
-                  +56 9 4123 4567
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <button className="text-blue-500">
-                    <IoDocumentTextSharp />
-                  </button>
-                  {"  "}
-                  Pepe
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
-                  <button className="text-blue-500">
-                    <FaEdit />
-                  </button>
-                  <button className="text-red-500">
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
+              {filteredEmpleados.map((empleado) => (
+                <tr key={empleado.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {empleado.nombre} {empleado.apellido}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {empleado.cargo}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(empleado.fecha_ingreso).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <button className="text-blue-500">
+                      <MdOutlineSettingsPhone />
+                    </button>
+                    {"  "}
+                    {empleado.telefono_emergencia}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <button className="text-blue-500">
+                      <IoDocumentTextSharp />
+                    </button>
+                    {"  "}
+                    {empleado.carga_familiar}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
+                    <button className="text-blue-500">
+                      <FaEdit />
+                    </button>
+                    <button className="text-red-500">
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
