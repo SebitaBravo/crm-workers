@@ -12,7 +12,7 @@ function Rol() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/api/roles", {
+      const response = await axios.post("http://localhost:3001/api/roles", {
         nombre: roleName,
       });
       setMessage(response.data.message);
