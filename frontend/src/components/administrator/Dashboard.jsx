@@ -18,6 +18,7 @@ function DashboardContent() {
         const response = await axios.get(
           "http://localhost:3001/api/trabajadores"
         );
+        console.log("Datos obtenidos:", response.data); // Verificar datos obtenidos
         setEmpleados(response.data);
 
         // Calcular la cantidad de cada cargo
