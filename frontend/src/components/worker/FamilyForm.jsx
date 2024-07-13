@@ -1,9 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "../Header";
 
-function CargasFamiliaresForm() {
+function FamilyForm() {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [parentesco, setParentesco] = useState("");
@@ -30,7 +30,6 @@ function CargasFamiliaresForm() {
       );
 
       setMessage("Carga familiar agregada exitosamente");
-      // Resetear el formulario
       setNombre("");
       setApellido("");
       setParentesco("");
@@ -151,4 +150,4 @@ function CargasFamiliaresForm() {
   );
 }
 
-export default CargasFamiliaresForm;
+export default FamilyForm;

@@ -9,22 +9,15 @@ function Sidebar() {
       </div>
       <nav className="mt-10">
         <Link
-          to="/trabajador/formulario"
+          to="/trabajador"
           className="flex items-center mt-4 py-2 px-6 bg-gray-200 text-gray-800"
         >
           <FaHospital className="mr-3" />
           Mis datos
         </Link>
         <Link
-          to="/trabajador/contacto"
-          className="flex items-center mt-4 py-2 px-6 bg-purple-600 text-white"
-        >
-          <FaUserPlus className="mr-3" />
-          Contacto de emergenia
-        </Link>
-        <Link
-          to="/trabajador/familia"
-          className="flex items-center mt-4 py-2 px-6 bg-purple-600 text-white"
+          to="/trabajador/carga"
+          className="flex items-center mt-4 py-2 px-6 bg-gray-200 text-gray-800"
         >
           <FaUserPlus className="mr-3" />
           Carga familiar

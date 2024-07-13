@@ -18,3 +18,24 @@ exports.createRol = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.updateRol = async (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.body;
+  try {
+    await db.query('UPDATE rol SET nombre = ? WHERE id = ?', [nombre, id]);
+    res.status(200).json({ message: 'Rol actualizado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteRol = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM rol WHERE id = ?', [id]);
+    res.status(200).json({ message: 'Rol eliminado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

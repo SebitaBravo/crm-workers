@@ -20,4 +20,24 @@ exports.createCargaFamiliar = async (req, res) => {
   }
 };
 
-// Agrega más funciones para actualizar y eliminar cargas familiares
+exports.updateCargaFamiliar = async (req, res) => {
+  const { id } = req.params;
+  const { nombre, apellido, parentesco, sexo, fecha_nacimiento, trabajador_id } = req.body;
+  try {
+    await db.query('UPDATE carga_familiar SET nombre = ?, apellido = ?, parentesco = ?, sexo = ?, fecha_nacimiento = ?, trabajador_id = ? WHERE id = ?', 
+    [nombre, apellido, parentesco, sexo, fecha_nacimiento, trabajador_id, id]);
+    res.status(200).json({ message: 'Carga familiar actualizada' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteCargaFamiliar = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM carga_familiar WHERE id = ?', [id]);
+    res.status(200).json({ message: 'Carga familiar eliminada' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

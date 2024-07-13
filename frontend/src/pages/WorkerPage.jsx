@@ -1,5 +1,6 @@
 import Sidebar from "../components/worker/Sidebar";
 import Header from "../components/Header";
+import WorkerForm from "../components/worker/WorkerForm";
 
 function WorkerPage() {
   return (
@@ -7,6 +8,7 @@ function WorkerPage() {
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Header />
+        <WorkerForm />
       </div>
     </div>
   );

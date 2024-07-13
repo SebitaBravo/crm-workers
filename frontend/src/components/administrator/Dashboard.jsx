@@ -18,10 +18,8 @@ function DashboardContent() {
         const response = await axios.get(
           "http://localhost:3001/api/trabajadores"
         );
-        console.log("Datos obtenidos:", response.data); // Verificar datos obtenidos
         setEmpleados(response.data);
 
-        // Calcular la cantidad de cada cargo
         const cargosCount = response.data.reduce((acc, empleado) => {
           acc[empleado.cargo] = (acc[empleado.cargo] || 0) + 1;
           return acc;
@@ -43,6 +41,19 @@ function DashboardContent() {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/api/trabajadores/${id}`);
+      setEmpleados(empleados.filter((empleado) => empleado.id !== id));
+    } catch (error) {
+      console.error("Error al eliminar el empleado:", error);
+    }
+  };
+
+  const handleEdit = (id) => {
+    console.log("Editar empleado con ID:", id);
   };
 
   const filteredEmpleados = empleados.filter((empleado) =>
@@ -115,7 +126,7 @@ function DashboardContent() {
             Agregar empleados
           </button>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="min-w-full bg-white">
             <thead>
               <tr>
@@ -152,24 +163,30 @@ function DashboardContent() {
                     {new Date(empleado.fecha_ingreso).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-blue-500">
+                    <button className="text-purple-600">
                       <MdOutlineSettingsPhone />
                     </button>
                     {"  "}
                     {empleado.telefono_emergencia}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-blue-500">
+                    <button className="text-purple-600">
                       <IoDocumentTextSharp />
                     </button>
                     {"  "}
                     {empleado.carga_familiar}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
-                    <button className="text-blue-500">
+                    <button
+                      className="text-blue-500"
+                      onClick={() => handleEdit(empleado.id)}
+                    >
                       <FaEdit />
                     </button>
-                    <button className="text-red-500">
+                    <button
+                      className="text-red-500"
+                      onClick={() => handleDelete(empleado.id)}
+                    >
                       <FaTrash />
                     </button>
                   </td>

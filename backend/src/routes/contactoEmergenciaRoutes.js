@@ -4,5 +4,7 @@ const contactoEmergenciaController = require('../controllers/contactoEmergenciaC
 
 router.get('/contactos-emergencia', contactoEmergenciaController.getAllContactosEmergencia);
 router.post('/contactos-emergencia', contactoEmergenciaController.createContactoEmergencia);
+router.put('/contactos-emergencia/:id', contactoEmergenciaController.updateContactoEmergencia);
+router.delete('/contactos-emergencia/:id', contactoEmergenciaController.deleteContactoEmergencia);
 
 module.exports = router;
