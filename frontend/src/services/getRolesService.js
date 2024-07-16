@@ -12,4 +12,4 @@ export const getRolesService = async () => {
     catch (error) {
         console.error("Error al obtener los roles:", error);
     }
-}
+};

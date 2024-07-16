@@ -20,4 +20,4 @@ export const postContactoEmergencia = async () => {
     } catch (error) {
         console.error("Error al obtener el contacto de emergencia:", error);
     }
-}
+};

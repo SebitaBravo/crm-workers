@@ -12,4 +12,4 @@ export const deleteTrabajadoresService = async (id) => {
     catch (error) {
         console.error("Error al eliminar el trabajador:", error);
     }
-}
+};

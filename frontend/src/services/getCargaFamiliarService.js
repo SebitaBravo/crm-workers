@@ -12,4 +12,4 @@ export const getCargaFamiliar = async () => {
     catch (error) {
         console.error("Error al obtener las cargas familiares:", error);
     }
-}
+};
