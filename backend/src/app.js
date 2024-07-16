@@ -6,10 +6,12 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const rolRoutes = require('./routes/rolRoutes');
 const contactoEmergenciaRoutes = require('./routes/contactoEmergenciaRoutes');
 const cargaFamiliarRoutes = require('./routes/cargaFamiliarRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 app.use(cors()); 
 app.use(express.json());
 
+app.use('/api/auth', authRoutes);
 app.use('/api', trabajadorRoutes);
 app.use('/api', usuarioRoutes);
 app.use('/api', rolRoutes);
