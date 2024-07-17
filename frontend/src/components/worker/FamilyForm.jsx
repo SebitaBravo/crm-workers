@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import Sidebar from "./Sidebar";
 import Header from "../Header";
+import { postCargaFamiliarService } from "../../services/cargasFamiliaresService";
 
 function FamilyForm() {
   const [nombre, setNombre] = useState("");
@@ -17,18 +17,16 @@ function FamilyForm() {
     setError("");
     setMessage("");
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/cargas-familiares",
-        {
-          nombre,
-          apellido,
-          parentesco,
-          sexo,
-          fecha_nacimiento: fechaNacimiento,
-        }
-      );
+    const nuevaCargaFamiliar = {
+      nombre,
+      apellido,
+      parentesco,
+      sexo,
+      fecha_nacimiento: fechaNacimiento,
+    };
 
+    try {
+      await postCargaFamiliarService(nuevaCargaFamiliar);
       setMessage("Carga familiar agregada exitosamente");
       setNombre("");
       setApellido("");

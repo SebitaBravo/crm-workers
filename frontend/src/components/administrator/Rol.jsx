@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios"; // Importa Axios
 import Sidebar from "./Sidebar";
 import Header from "../Header";
+import { postRolesService } from "../../services/rolesService";
 
 function Rol() {
   const [roleName, setRoleName] = useState("");
@@ -12,13 +12,13 @@ function Rol() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/api/roles", {
-        nombre: roleName,
-      });
-      setMessage(response.data.message);
+      const response = await postRolesService(roleName);
+      setMessage("Rol agregado correctamente");
       setRoleName("");
+      setError("");
     } catch (error) {
       setError("Error al agregar el rol");
+      setMessage("");
     }
   };
 

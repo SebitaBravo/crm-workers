@@ -1,14 +1,9 @@
-import { Link } from "react-router-dom";
+import React from "react";
 
 const TopBar = () => {
   return (
-    <div className="p-4 flex justify-between items-center">
-      <div className="text-2xl">Crm Workers</div>
-      <div className="space-x-4">
-        <Link to="/" className=" hover:text-gray-400">
-          Home
-        </Link>
-      </div>
+    <div className="bg-blue-500 text-white p-4">
+      <h1 className="text-2xl">Sistema de Gestión de Recursos Humanos</h1>
     </div>
   );
 };

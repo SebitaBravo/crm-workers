@@ -1,12 +1,19 @@
-import { useState } from "react";
-import TopBar from "../components/login/TopBar";
+import { useState, useContext } from "react";
+import AuthContext from "../context/AuthContext.jsx";
+import TopBar from "../components/login/TopBar.jsx";
 
-function Login() {
-  const [username, setUsername] = useState("");
+const Login = () => {
+  const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
 
-  const handleAutoComplete = (name, password) => {
-    setUsername(name);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(usuario, password);
+  };
+
+  const handleAutoComplete = (username, password) => {
+    setUsuario(username);
     setPassword(password);
   };
 
@@ -16,7 +23,7 @@ function Login() {
       <div className="flex flex-grow items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-lg text-center">
           <h2 className="text-xl font-bold mb-4">Inicio de Sesión</h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label
                 className="block text-left font-bold mb-1"
@@ -28,8 +35,8 @@ function Login() {
                 type="text"
                 id="username"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={usuario}
+                onChange={(e) => setUsuario(e.target.value)}
               />
             </div>
             <div>
@@ -92,6 +99,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

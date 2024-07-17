@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { MdOutlineSettingsPhone } from "react-icons/md";
-import { IoDocumentTextSharp } from "react-icons/io5";
+import { getTrabajadoresService } from "../../services/trabajadoresService";
+import { getContactoEmergenciaService } from "../../services/contactoEmergenciaService";
+import { getCargaFamiliar } from "../../services/cargasFamiliaresService";
 
 function DashboardContent() {
   const [empleados, setEmpleados] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const fetchEmpleados = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/trabajadores"
+        const [trabajadoresData, contactosData, cargasData] = await Promise.all(
+          [
+            getTrabajadoresService(),
+            getContactoEmergenciaService(),
+            getCargaFamiliar(),
+          ]
         );
-        const empleadosData = response.data;
-        setEmpleados(empleadosData);
+
+        const empleadosConDatos = trabajadoresData.map((trabajador) => {
+          const contacto = contactosData.find(
+            (contacto) => contacto.trabajador_id === trabajador.id
+          );
+          const carga = cargasData.find(
+            (carga) => carga.trabajador_id === trabajador.id
+          );
+          return {
+            ...trabajador,
+            contacto_emergencia: contacto
+              ? `${contacto.nombre} ${contacto.apellido} (${contacto.telefono})`
+              : "No disponible",
+            carga_familiar: carga
+              ? `${carga.nombre} ${carga.apellido} (${carga.parentesco})`
+              : "No disponible",
+          };
+        });
+
+        setEmpleados(empleadosConDatos);
       } catch (error) {
-        console.error("Error al obtener los empleados:", error);
+        console.error("Error al obtener los datos:", error);
       }
     };
 
-    fetchEmpleados();
+    fetchData();
   }, []);
 
   const handleSearchChange = (e) => {
@@ -33,15 +55,11 @@ function DashboardContent() {
 
   return (
     <div className="flex flex-col w-full p-6 space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-700">Empleados</h2>
-          <button className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-500">
-            Agregar empleados
-          </button>
         </div>
-        <div>
+        <div className="relative">
           <input
             type="text"
             className="w-full py-2 pl-10 pr-4 bg-gray-100 rounded-md"
@@ -49,6 +67,18 @@ function DashboardContent() {
             value={searchTerm}
             onChange={handleSearchChange}
           />
+          <svg
+            className="w-5 h-5 text-gray-400 absolute left-3 top-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12.9 14.32a8 8 0 111.414-1.415l4.243 4.243a1 1 0 01-1.414 1.415l-4.243-4.243zM8 14a6 6 0 100-12 6 6 0 000 12z"
+              clipRule="evenodd"
+            />
+          </svg>
         </div>
         <br />
         <div className="overflow-x-auto">
@@ -85,17 +115,9 @@ function DashboardContent() {
                     {new Date(empleado.fecha_ingreso).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-blue-500 hover:bg-blue-400">
-                      <MdOutlineSettingsPhone />
-                    </button>
-                    {"  "}
                     {empleado.contacto_emergencia}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-blue-500 hover:bg-blue-400">
-                      <IoDocumentTextSharp />
-                    </button>
-                    {"  "}
                     {empleado.carga_familiar}
                   </td>
                 </tr>

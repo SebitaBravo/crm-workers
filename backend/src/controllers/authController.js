@@ -1,9 +1,9 @@
-import { pool } from '../db.js';
-import bcrypt from 'bcrypt';
+const {pool} = require('../db.js');
+const bcrypt = require('bcrypt');
 
 const table = 'usuarios';
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
     try {
         const { usuario, password } = req.body;
         const [result] = await pool.query(`SELECT * FROM ${table} WHERE usuario = ?`, [usuario]);
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
     }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { usuario, password } = req.body;
         const [result] = await pool.query(`SELECT * FROM ${table} WHERE usuario = ?`, [usuario]);
@@ -37,4 +37,4 @@ export const login = async (req, res) => {
     }
 };
 
-export default { register, login };
+module.exports = { register, login };

@@ -1,32 +1,74 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Pie, Bar } from "react-chartjs-2";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { MdOutlineSettingsPhone } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import "chart.js/auto";
+import {
+  getTrabajadoresService,
+  deleteTrabajadorService,
+  postTrabajadoresService,
+} from "../../services/trabajadoresService";
+import { getContactoEmergenciaService } from "../../services/contactoEmergenciaService";
+import { getCargaFamiliar } from "../../services/cargasFamiliaresService";
 
-function DashboardContent() {
+function Dashboard() {
   const [empleados, setEmpleados] = useState([]);
   const [cargos, setCargos] = useState({});
   const [salarios, setSalarios] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [newTrabajador, setNewTrabajador] = useState({
+    rut_trabajador: "",
+    nombre: "",
+    apellido: "",
+    sexo: "",
+    direccion: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    cargo: "",
+    fecha_ingreso: "",
+    departamento: "",
+    salario: 0,
+  });
 
   useEffect(() => {
     const fetchEmpleados = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/api/trabajadores"
+        const [trabajadoresData, contactosData, cargasData] = await Promise.all(
+          [
+            getTrabajadoresService(),
+            getContactoEmergenciaService(),
+            getCargaFamiliar(),
+          ]
         );
-        setEmpleados(response.data);
 
-        const cargosCount = response.data.reduce((acc, empleado) => {
+        const empleadosConDatos = trabajadoresData.map((trabajador) => {
+          const contacto = contactosData.find(
+            (contacto) => contacto.trabajador_id === trabajador.id
+          );
+          const carga = cargasData.find(
+            (carga) => carga.trabajador_id === trabajador.id
+          );
+          return {
+            ...trabajador,
+            contacto_emergencia: contacto
+              ? `${contacto.nombre} ${contacto.apellido} (${contacto.telefono})`
+              : "No disponible",
+            carga_familiar: carga
+              ? `${carga.nombre} ${carga.apellido} (${carga.parentesco})`
+              : "No disponible",
+          };
+        });
+
+        setEmpleados(empleadosConDatos);
+
+        const cargosCount = trabajadoresData.reduce((acc, empleado) => {
           acc[empleado.cargo] = (acc[empleado.cargo] || 0) + 1;
           return acc;
         }, {});
         setCargos(cargosCount);
 
-        const totalSalarios = response.data.reduce(
+        const totalSalarios = trabajadoresData.reduce(
           (acc, empleado) => acc + empleado.salario,
           0
         );
@@ -45,7 +87,7 @@ function DashboardContent() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/api/trabajadores/${id}`);
+      await deleteTrabajadorService(id);
       setEmpleados(empleados.filter((empleado) => empleado.id !== id));
     } catch (error) {
       console.error("Error al eliminar el empleado:", error);
@@ -54,6 +96,15 @@ function DashboardContent() {
 
   const handleEdit = (id) => {
     console.log("Editar empleado con ID:", id);
+  };
+
+  const handleAddTrabajador = async () => {
+    try {
+      const addedTrabajador = await postTrabajadoresService(newTrabajador);
+      setEmpleados([...empleados, addedTrabajador]);
+    } catch (error) {
+      console.error("Error al agregar el empleado:", error);
+    }
   };
 
   const filteredEmpleados = empleados.filter((empleado) =>
@@ -122,9 +173,6 @@ function DashboardContent() {
         <br />
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-700">Empleados</h2>
-          <button className="bg-purple-600 text-white py-2 px-4 rounded">
-            Agregar empleados
-          </button>
         </div>
         <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="min-w-full bg-white">
@@ -163,17 +211,9 @@ function DashboardContent() {
                     {new Date(empleado.fecha_ingreso).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-purple-600">
-                      <MdOutlineSettingsPhone />
-                    </button>
-                    {"  "}
-                    {empleado.telefono_emergencia}
+                    {empleado.contacto_emergencia}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button className="text-purple-600">
-                      <IoDocumentTextSharp />
-                    </button>
-                    {"  "}
                     {empleado.carga_familiar}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
@@ -200,4 +240,4 @@ function DashboardContent() {
   );
 }
 
-export default DashboardContent;
+export default Dashboard;

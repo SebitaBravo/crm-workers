@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+import { postTrabajadoresService } from "../../services/trabajadoresService";
+import { postContactoEmergenciaService } from "../../services/contactoEmergenciaService";
 
 function WorkerForm() {
   const [rut_trabajador, setRutTrabajador] = useState("");
@@ -25,31 +26,33 @@ function WorkerForm() {
     setError("");
     setMessage("");
 
+    const nuevoTrabajador = {
+      rut_trabajador,
+      nombre,
+      apellido,
+      sexo,
+      direccion,
+      telefono,
+      fecha_nacimiento,
+      cargo,
+      fecha_ingreso,
+      departamento,
+      salario,
+    };
+
+    const nuevoContactoEmergencia = {
+      nombre: contactoNombre,
+      apellido: contactoApellido,
+      relacion: contactoRelacion,
+      telefono: contactoTelefono,
+    };
+
     try {
-      const responseTrabajador = await axios.post(
-        "http://localhost:3001/api/trabajadores",
-        {
-          rut_trabajador,
-          nombre,
-          apellido,
-          sexo,
-          direccion,
-          telefono,
-          fecha_nacimiento,
-          cargo,
-          fecha_ingreso,
-          departamento,
-          salario,
-        }
-      );
+      const responseTrabajador = await postTrabajadoresService(nuevoTrabajador);
+      const trabajadorId = responseTrabajador.id;
 
-      const trabajadorId = responseTrabajador.data.trabajadorId;
-
-      await axios.post("http://localhost:3001/api/contacto-emergencia", {
-        nombre: contactoNombre,
-        apellido: contactoApellido,
-        relacion: contactoRelacion,
-        telefono: contactoTelefono,
+      await postContactoEmergenciaService({
+        ...nuevoContactoEmergencia,
         trabajador_id: trabajadorId,
       });
 
