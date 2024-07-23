@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Pie, Bar } from "react-chartjs-2";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { MdOutlineSettingsPhone } from "react-icons/md";
-import { IoDocumentTextSharp } from "react-icons/io5";
 import "chart.js/auto";
 import {
   getTrabajadoresService,
@@ -11,12 +9,14 @@ import {
 } from "../../services/trabajadoresService";
 import { getContactoEmergenciaService } from "../../services/contactoEmergenciaService";
 import { getCargaFamiliar } from "../../services/cargasFamiliaresService";
+import EditEmployeeForm from "./EditEmployeeForm";
 
 function Dashboard() {
   const [empleados, setEmpleados] = useState([]);
   const [cargos, setCargos] = useState({});
   const [salarios, setSalarios] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [newTrabajador, setNewTrabajador] = useState({
     rut_trabajador: "",
     nombre: "",
@@ -94,8 +94,17 @@ function Dashboard() {
     }
   };
 
-  const handleEdit = (id) => {
-    console.log("Editar empleado con ID:", id);
+  const handleEdit = (empleado) => {
+    setSelectedEmployee(empleado);
+  };
+
+  const handleSave = (updatedEmployee) => {
+    setEmpleados(
+      empleados.map((emp) =>
+        emp.id === updatedEmployee.id ? updatedEmployee : emp
+      )
+    );
+    setSelectedEmployee(null);
   };
 
   const handleAddTrabajador = async () => {
@@ -140,102 +149,108 @@ function Dashboard() {
 
   return (
     <div className="flex flex-col w-full p-6 space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-700">Cargos</h2>
+      {selectedEmployee ? (
+        <EditEmployeeForm empleado={selectedEmployee} onSave={handleSave} />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-gray-700">Cargos</h2>
+              </div>
+              <div className="mt-4">
+                <Pie data={pieData} />
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-gray-700">
+                  Gastos en Salarios
+                </h2>
+              </div>
+              <div className="mt-4">
+                <Bar data={barData} />
+              </div>
+            </div>
           </div>
-          <div className="mt-4">
-            <Pie data={pieData} />
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div>
+              <input
+                type="text"
+                className="w-full py-2 pl-10 pr-4 bg-gray-100 rounded-md"
+                placeholder="Buscar empleados"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <br />
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-700">Empleados</h2>
+            </div>
+            <div className="overflow-x-auto max-h-96 overflow-y-auto">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Nombre
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Cargo
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Fecha ingreso
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Contacto de emergencia
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Carga familiar
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Editar
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredEmpleados.map((empleado) => (
+                    <tr key={empleado.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {empleado.nombre} {empleado.apellido}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {empleado.cargo}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(empleado.fecha_ingreso).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {empleado.contacto_emergencia}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {empleado.carga_familiar}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
+                        <button
+                          className="text-blue-500"
+                          onClick={() => handleEdit(empleado)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="text-red-500"
+                          onClick={() => handleDelete(empleado.id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-lg col-span-1">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-700">
-              Gastos en Salarios
-            </h2>
-          </div>
-          <div className="mt-4">
-            <Bar data={barData} />
-          </div>
-        </div>
-      </div>
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <div>
-          <input
-            type="text"
-            className="w-full py-2 pl-10 pr-4 bg-gray-100 rounded-md"
-            placeholder="Buscar empleados"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
-        <br />
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-700">Empleados</h2>
-        </div>
-        <div className="overflow-x-auto max-h-96 overflow-y-auto">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Nombre
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Cargo
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Fecha ingreso
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Contacto de emergencia
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Carga familiar
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Editar
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEmpleados.map((empleado) => (
-                <tr key={empleado.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {empleado.nombre} {empleado.apellido}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {empleado.cargo}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(empleado.fecha_ingreso).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {empleado.contacto_emergencia}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {empleado.carga_familiar}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex space-x-2">
-                    <button
-                      className="text-blue-500"
-                      onClick={() => handleEdit(empleado.id)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      className="text-red-500"
-                      onClick={() => handleDelete(empleado.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

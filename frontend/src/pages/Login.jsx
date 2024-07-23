@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import AuthContext from "../context/AuthContext.jsx";
+
 import TopBar from "../components/login/TopBar.jsx";
 
 const Login = () => {

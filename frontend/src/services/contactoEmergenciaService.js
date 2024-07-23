@@ -34,3 +34,16 @@ export const deleteContactoEmergenciaService = async (id) => {
         throw error;
     }
 };
+
+export const updateContactoEmergenciaService = async (contacto) => {
+    try {
+        const response = await axios.patch(`http://localhost:3001/api/contactos-emergencia/${contacto.id}`, contacto);
+        if (response.status !== 200) {
+            throw new Error('Error al actualizar el contacto de emergencia');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error al actualizar el contacto de emergencia:', error);
+        throw error;
+    }
+};

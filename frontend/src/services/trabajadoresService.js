@@ -37,3 +37,16 @@ export const postTrabajadoresService = async (trabajador) => {
         throw error;
     }
 };
+
+export const updateTrabajadorService = async (trabajador) => {
+    try {
+        const response = await axios.patch(`http://localhost:3001/api/trabajadores/${trabajador.id}`, trabajador);
+        if (response.status !== 200) {
+            throw new Error("Error al actualizar el empleado");
+        }
+        return response.data;
+    } catch (error) {
+        console.error("Error al actualizar el empleado:", error);
+        throw error;
+    }
+};

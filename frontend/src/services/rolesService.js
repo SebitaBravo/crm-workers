@@ -36,3 +36,16 @@ export const deleteRolesService = async (id) => {
         throw error;
     }
 };
+
+export const updateRolesService = async (rol) => {
+    try {
+        const response = await axios.patch(`http://localhost:3001/api/roles/${rol.id}`, rol);
+        if (response.status !== 200) {
+            throw new Error('Error al actualizar el rol');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error al actualizar el rol:', error);
+        throw error;
+    }
+};
