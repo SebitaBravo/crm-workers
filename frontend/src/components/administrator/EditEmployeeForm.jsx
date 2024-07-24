@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { updateTrabajadorService } from "../../services/trabajadoresService";
-import { updateContactoEmergenciaService } from "../../services/contactoEmergenciaService";
-import { updateCargaFamiliarService } from "../../services/cargasFamiliaresService";
+import {
+  updateTrabajadorService,
+  updateContactoEmergenciaService,
+  updateCargaFamiliarService,
+} from "../../services/trabajadoresService";
 
 function EditEmployeeForm({ empleado, onSave }) {
   const formatDate = (dateString) => {
@@ -52,7 +54,7 @@ function EditEmployeeForm({ empleado, onSave }) {
     try {
       await updateTrabajadorService(formData);
       await updateContactoEmergenciaService({
-        id: empleado.contacto_emergencia?.id, // Asegúrate de que el id del contacto de emergencia esté presente
+        id: empleado.contacto_emergencia?.id,
         nombre: formData.contactoNombre,
         apellido: formData.contactoApellido,
         relacion: formData.contactoRelacion,
@@ -60,7 +62,7 @@ function EditEmployeeForm({ empleado, onSave }) {
         trabajador_id: empleado.id,
       });
       await updateCargaFamiliarService({
-        id: empleado.carga_familiar?.id, // Asegúrate de que el id de la carga familiar esté presente
+        id: empleado.carga_familiar?.id,
         nombre: formData.cargaNombre,
         apellido: formData.cargaApellido,
         parentesco: formData.cargaParentesco,

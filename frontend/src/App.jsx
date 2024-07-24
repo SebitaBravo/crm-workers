@@ -7,7 +7,7 @@ import FamilyForm from "./components/worker/FamilyForm.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Rol from "./components/administrator/Rol.jsx";
-import { AuthProvider } from "./context/AuthContext.js";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (

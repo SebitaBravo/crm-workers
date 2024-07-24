@@ -2,7 +2,7 @@ import Sidebar from "../components/chief/Sidebar";
 import Header from "../components/Header";
 import DashboardContent from "../components/chief/Dashboard";
 
-function AdminPage() {
+function ChiefPage() {
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       <Sidebar />
@@ -14,4 +14,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default ChiefPage;

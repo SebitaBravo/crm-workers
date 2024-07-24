@@ -8,7 +8,7 @@ import {
   postTrabajadoresService,
 } from "../../services/trabajadoresService";
 import { getContactoEmergenciaService } from "../../services/contactoEmergenciaService";
-import { getCargaFamiliar } from "../../services/cargasFamiliaresService";
+import { getCargaFamiliarService } from "../../services/cargasFamiliaresService";
 import EditEmployeeForm from "./EditEmployeeForm";
 
 function Dashboard() {
@@ -38,7 +38,7 @@ function Dashboard() {
           [
             getTrabajadoresService(),
             getContactoEmergenciaService(),
-            getCargaFamiliar(),
+            getCargaFamiliarService(),
           ]
         );
 

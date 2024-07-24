@@ -12,7 +12,7 @@ function Rol() {
     e.preventDefault();
 
     try {
-      const response = await postRolesService(roleName);
+      await postRolesService(roleName);
       setMessage("Rol agregado correctamente");
       setRoleName("");
       setError("");
