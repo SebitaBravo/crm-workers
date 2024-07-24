@@ -1,6 +1,6 @@
 import { pool } from '../db.js';
 
-exports.getAllContactosEmergencia = async (req, res) => {
+export const getAllContactosEmergencia = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM contacto_emergencia');
         res.json(rows);
@@ -9,7 +9,7 @@ exports.getAllContactosEmergencia = async (req, res) => {
     }
 };
 
-exports.createContactoEmergencia = async (req, res) => {
+export const createContactoEmergencia = async (req, res) => {
     const { nombre, apellido, relacion, telefono, trabajador_id } = req.body;
     try {
         const [results] = await pool.query('INSERT INTO contacto_emergencia (nombre, apellido, relacion, telefono, trabajador_id) VALUES (?, ?, ?, ?, ?)', 
@@ -20,7 +20,7 @@ exports.createContactoEmergencia = async (req, res) => {
     }
 };
 
-exports.updateContactoEmergencia = async (req, res) => {
+export const updateContactoEmergencia = async (req, res) => {
     const { id } = req.params;
     const { nombre, apellido, relacion, telefono, trabajador_id } = req.body;
     try {
@@ -32,7 +32,7 @@ exports.updateContactoEmergencia = async (req, res) => {
     }
 };
 
-exports.deleteContactoEmergencia = async (req, res) => {
+export const deleteContactoEmergencia = async (req, res) => {
     const { id } = req.params;
     try {
         await pool.query('DELETE FROM contacto_emergencia WHERE id = ?', [id]);

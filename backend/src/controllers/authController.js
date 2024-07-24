@@ -1,6 +1,6 @@
 import { pool } from '../db.js';
-const bcrypt = require('bcrypt');
-import { generateToken } from '../middlewares/auth.js';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../tokens/generateToken.js';
 
 const table = 'usuario';
 

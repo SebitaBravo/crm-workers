@@ -14,4 +14,4 @@ export const checkAuth = (req, res, next) => {
     } catch (error) {
         res.status(401).json({message: 'No autorizado'});
     }
-}
+};

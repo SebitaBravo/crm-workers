@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as usuariosController from "../controllers/usuarioController";
+import * as usuariosController from "../controllers/usuarioController.js";
 import { checkAuth } from "../middlewares/auth.js";
 import { checkRoleAuth } from "../middlewares/rolAuth.js";
 

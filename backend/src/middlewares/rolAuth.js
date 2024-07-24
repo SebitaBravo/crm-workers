@@ -1,4 +1,4 @@
-import { verifyToken } from "../tokens/generateToken.js";
+import { verifyToken } from '../tokens/generateToken.js';
 
 export const checkRoleAuth = (roles) => async (req, res, next) => {
     try {
@@ -13,4 +13,4 @@ export const checkRoleAuth = (roles) => async (req, res, next) => {
         console.log(error);
         res.status(401).json({ message: 'Unauthorized' });
     }
-}
+};
