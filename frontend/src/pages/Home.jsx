@@ -2,10 +2,10 @@ import TopBar from "../components/TopBar";
 
 function Home() {
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex flex-grow items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+        <div className="p-8 rounded-lg shadow-lg text-center">
           <h1 className="text-2xl font-bold mb-4">⚠️ Warning ⚠️</h1>
           <p className="mb-2">
             Esta es solo una demo de la pagina los datos ingresados serán vistos

@@ -44,41 +44,55 @@ export const Login = () => {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <Card className="py-14 w-[420px] px-8 flex gap-4">
-        <Input
-          autoFocus
-          label="usuario"
-          placeholder="Ingresa tu usuario"
-          variant="bordered"
-          name="usuario"
-          value={inputFields.usuario}
-          onChange={handleInput}
-        />
-        <Input
-          label="Contraseña"
-          placeholder="Ingresa tu contraseña"
-          type="password"
-          variant="bordered"
-          name="password"
-          value={inputFields.password}
-          onChange={handleInput}
-        />
-        <div className="flex py-2 px-1 justify-between">
-          <Checkbox
-            classNames={{
-              label: "text-small",
-            }}
-          >
-            Remember me
-          </Checkbox>
-          <Link color="primary" href="#" size="sm">
-            Forgot password?
-          </Link>
+      <div className="py-14 w-[420px] px-8 flex flex-col gap-4 rounded-lg shadow-md">
+        <div>
+          <label htmlFor="usuario" className="block text-sm font-medium">
+            Usuario
+          </label>
+          <input
+            autoFocus
+            id="usuario"
+            name="usuario"
+            type="text"
+            placeholder="Ingresa tu usuario"
+            value={inputFields.usuario}
+            onChange={handleInput}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
         </div>
-        <Button color="primary" onPress={handleLogin}>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium ">
+            Contraseña
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Ingresa tu contraseña"
+            value={inputFields.password}
+            onChange={handleInput}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div className="flex py-2 px-1 justify-between items-center">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+            />
+            <span className="ml-2 text-sm ">Remember me</span>
+          </label>
+          <a href="#" className="text-sm text-indigo-600 hover:underline">
+            Forgot password?
+          </a>
+        </div>
+        <button
+          onClick={handleLogin}
+          className="w-full py-2 px-4 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
           Sign in
-        </Button>
-      </Card>
+        </button>
+      </div>
     </div>
   );
 };
