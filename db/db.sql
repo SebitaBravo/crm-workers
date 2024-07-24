@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS gestor_trabajadores;
+
 -- Crear tabla de roles
 CREATE TABLE IF NOT EXISTS rol (
     id INT AUTO_INCREMENT PRIMARY KEY,
