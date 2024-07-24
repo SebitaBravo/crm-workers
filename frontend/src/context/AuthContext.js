@@ -1,41 +1,59 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [rol, setRol] = useState(localStorage.getItem("rol") || "");
+  const [tokenExpiration, setTokenExpiration] = useState(
+    localStorage.getItem("tokenExpiration") || ""
+  );
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setUser({ usuario: 'autenticado' });
-        }
-    }, []);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedRol = localStorage.getItem("rol");
+    const storedTokenExpiration = localStorage.getItem("tokenExpiration");
 
-    const login = async (usuario, password) => {
-        try {
-            const { data } = await axios.post('http://localhost:3001/api/auth/login', { usuario, password });
-            localStorage.setItem('token', data.token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-            setUser({ usuario });
-        } catch (error) {
-            console.error('Error al iniciar sesión:', error);
-        }
-    };
+    if (storedToken) {
+      setToken(storedToken);
+    }
+    if (storedRol) {
+      setRol(storedRol);
+    }
+    if (storedTokenExpiration) {
+      setTokenExpiration(storedTokenExpiration);
+    }
+  }, []);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-        delete axios.defaults.headers.common['Authorization'];
-    };
+  const login = (token, rol, tokenExpiration) => {
+    setToken(token);
+    localStorage.setItem("token", token);
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    setRol(rol);
+    localStorage.setItem("rol", rol);
+
+    setTokenExpiration(tokenExpiration);
+    localStorage.setItem("tokenExpiration", tokenExpiration);
+  };
+
+  const logout = () => {
+    setToken("");
+    localStorage.removeItem("token");
+
+    setRol("");
+    localStorage.removeItem("rol");
+
+    setTokenExpiration("");
+    localStorage.removeItem("tokenExpiration");
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{ token, rol, tokenExpiration, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export default AuthContext;
+export { AuthContext, AuthProvider };

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const API_URL = 'http://localhost:3001/api/trabajadores';
+
 export const getTrabajadoresService = async () => {
     try {
-        const response = await axios.get('http://localhost:3001/api/trabajadores');
+        const response = await axios.get(API_URL);
         if (response.status !== 200) {
             throw new Error("Error al obtener los empleados");
         }
@@ -15,7 +17,7 @@ export const getTrabajadoresService = async () => {
 
 export const deleteTrabajadorService = async (id) => {
     try {
-        await axios.delete(`http://localhost:3001/api/trabajadores/${id}`);
+        await axios.delete(`${API_URL}/${id}`);
     } catch (error) {
         console.error("Error al eliminar el empleado:", error);
         throw error;
@@ -24,10 +26,7 @@ export const deleteTrabajadorService = async (id) => {
 
 export const postTrabajadoresService = async (trabajador) => {
     try {
-        const response = await axios.post(
-            "http://localhost:3001/api/trabajadores",
-            trabajador
-        );
+        const response = await axios.post(API_URL, trabajador);
         if (response.status !== 201) {
             throw new Error("Error al agregar el empleado");
         }
@@ -40,7 +39,7 @@ export const postTrabajadoresService = async (trabajador) => {
 
 export const updateTrabajadorService = async (trabajador) => {
     try {
-        const response = await axios.patch(`http://localhost:3001/api/trabajadores/${trabajador.id}`, trabajador);
+        const response = await axios.patch(`${API_URL}/${trabajador.id}`, trabajador);
         if (response.status !== 200) {
             throw new Error("Error al actualizar el empleado");
         }
