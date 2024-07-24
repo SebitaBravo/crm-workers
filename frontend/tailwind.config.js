@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {fontFamily: ["Roboto", "sans-serif"]},
   },
+  darkMode: "class",
   plugins: [],
 }
 
