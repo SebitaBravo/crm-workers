@@ -1,9 +1,7 @@
-import { useState } from "react";
-import {
-  updateTrabajadorService,
-  updateContactoEmergenciaService,
-  updateCargaFamiliarService,
-} from "../../services/trabajadoresService";
+import { useState, useEffect } from "react";
+import { updateTrabajadorService } from "../../services/trabajadoresService";
+import { updateContactoEmergenciaService } from "../../services/contactoEmergenciaService";
+import { updateCargaFamiliarService } from "../../services/cargasFamiliaresService";
 
 function EditEmployeeForm({ empleado, onSave }) {
   const formatDate = (dateString) => {
@@ -16,27 +14,54 @@ function EditEmployeeForm({ empleado, onSave }) {
   };
 
   const [formData, setFormData] = useState({
-    rut_trabajador: empleado.rut_trabajador,
-    nombre: empleado.nombre,
-    apellido: empleado.apellido,
-    sexo: empleado.sexo,
-    direccion: empleado.direccion,
-    telefono: empleado.telefono,
-    fecha_nacimiento: formatDate(empleado.fecha_nacimiento),
-    cargo: empleado.cargo,
-    fecha_ingreso: formatDate(empleado.fecha_ingreso),
-    departamento: empleado.departamento,
-    salario: empleado.salario,
-    contactoNombre: empleado.contacto_emergencia?.nombre || "",
-    contactoApellido: empleado.contacto_emergencia?.apellido || "",
-    contactoRelacion: empleado.contacto_emergencia?.relacion || "",
-    contactoTelefono: empleado.contacto_emergencia?.telefono || "",
-    cargaNombre: empleado.carga_familiar?.nombre || "",
-    cargaApellido: empleado.carga_familiar?.apellido || "",
-    cargaParentesco: empleado.carga_familiar?.parentesco || "",
-    cargaSexo: empleado.carga_familiar?.sexo || "",
-    cargaFechaNacimiento: formatDate(empleado.carga_familiar?.fecha_nacimiento),
+    rut_trabajador: "",
+    nombre: "",
+    apellido: "",
+    sexo: "",
+    direccion: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    cargo: "",
+    fecha_ingreso: "",
+    departamento: "",
+    salario: "",
+    contactoNombre: "",
+    contactoApellido: "",
+    contactoRelacion: "",
+    contactoTelefono: "",
+    cargaNombre: "",
+    cargaApellido: "",
+    cargaParentesco: "",
+    cargaSexo: "",
+    cargaFechaNacimiento: "",
   });
+
+  useEffect(() => {
+    setFormData({
+      rut_trabajador: empleado.rut_trabajador,
+      nombre: empleado.nombre,
+      apellido: empleado.apellido,
+      sexo: empleado.sexo,
+      direccion: empleado.direccion,
+      telefono: empleado.telefono,
+      fecha_nacimiento: formatDate(empleado.fecha_nacimiento),
+      cargo: empleado.cargo,
+      fecha_ingreso: formatDate(empleado.fecha_ingreso),
+      departamento: empleado.departamento,
+      salario: empleado.salario,
+      contactoNombre: empleado.contacto_emergencia?.nombre || "",
+      contactoApellido: empleado.contacto_emergencia?.apellido || "",
+      contactoRelacion: empleado.contacto_emergencia?.relacion || "",
+      contactoTelefono: empleado.contacto_emergencia?.telefono || "",
+      cargaNombre: empleado.carga_familiar?.nombre || "",
+      cargaApellido: empleado.carga_familiar?.apellido || "",
+      cargaParentesco: empleado.carga_familiar?.parentesco || "",
+      cargaSexo: empleado.carga_familiar?.sexo || "",
+      cargaFechaNacimiento: formatDate(
+        empleado.carga_familiar?.fecha_nacimiento
+      ),
+    });
+  }, [empleado]);
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");

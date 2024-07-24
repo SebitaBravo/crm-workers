@@ -4,7 +4,7 @@ import DashboardContent from "../components/administrator/Dashboard";
 
 function AdminPage() {
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen">
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Header />

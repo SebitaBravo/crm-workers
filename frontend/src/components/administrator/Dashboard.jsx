@@ -11,25 +11,10 @@ import { getContactoEmergenciaService } from "../../services/contactoEmergenciaS
 import { getCargaFamiliarService } from "../../services/cargasFamiliaresService";
 import EditEmployeeForm from "./EditEmployeeForm";
 
-function Dashboard() {
+const useEmpleadosData = () => {
   const [empleados, setEmpleados] = useState([]);
   const [cargos, setCargos] = useState({});
   const [salarios, setSalarios] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [newTrabajador, setNewTrabajador] = useState({
-    rut_trabajador: "",
-    nombre: "",
-    apellido: "",
-    sexo: "",
-    direccion: "",
-    telefono: "",
-    fecha_nacimiento: "",
-    cargo: "",
-    fecha_ingreso: "",
-    departamento: "",
-    salario: 0,
-  });
 
   useEffect(() => {
     const fetchEmpleados = async () => {
@@ -80,6 +65,27 @@ function Dashboard() {
 
     fetchEmpleados();
   }, []);
+
+  return { empleados, cargos, salarios, setEmpleados };
+};
+
+function Dashboard() {
+  const { empleados, cargos, salarios, setEmpleados } = useEmpleadosData();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [newTrabajador, setNewTrabajador] = useState({
+    rut_trabajador: "",
+    nombre: "",
+    apellido: "",
+    sexo: "",
+    direccion: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    cargo: "",
+    fecha_ingreso: "",
+    departamento: "",
+    salario: 0,
+  });
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
