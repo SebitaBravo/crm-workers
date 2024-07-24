@@ -38,8 +38,8 @@ export const register = async (req, res) => {
             return res.status(400).json({ message: 'El usuario ya existe' });
         } else {
             const passwordEncrypted = await encriptedPassword(password);
-            await pool.query(`INSERT INTO ${table} (username, password) VALUES (?, ?)`, [username, passwordEncrypted]);
-            const tokenInfo = generateToken({ id: result.insertId, username, rol_id: 1 });
+            const [insertResult] = await pool.query(`INSERT INTO ${table} (username, password) VALUES (?, ?)`, [username, passwordEncrypted]);
+            const tokenInfo = generateToken({ id: insertResult.insertId, username, rol_id: 1 });
             res.json({ message: 'Usuario registrado', ...tokenInfo });
         }
     } catch (error) {
