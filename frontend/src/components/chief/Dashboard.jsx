@@ -6,6 +6,7 @@ import { getCargaFamiliarService } from "../../services/cargasFamiliaresService"
 function DashboardContent() {
   const [empleados, setEmpleados] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +40,7 @@ function DashboardContent() {
         setEmpleados(empleadosConDatos);
       } catch (error) {
         console.error("Error al obtener los datos:", error);
+        setError("Error al obtener los datos");
       }
     };
 
@@ -75,11 +77,12 @@ function DashboardContent() {
           >
             <path
               fillRule="evenodd"
-              d="M12.9 14.32a8 8 0 111.414-1.415l4.243 4.243a1 1 0 01-1.414 1.415l-4.243-4.243zM8 14a6 6 0 100- 8 0 000 12z"
+              d="M12.9 14.32a8 8 0 111.414-1.415l4.243 4.243a1 1 0 01-1.414 1.415l-4.243-4.243zM8 14a6 6 0 100-12 6 6 0 000 12z"
               clipRule="evenodd"
             />
           </svg>
         </div>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
         <br />
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
