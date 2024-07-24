@@ -1,4 +1,14 @@
+import React, { useContext } from "react";
+import { AuthContext } from "../auth/context/AuthContext";
+
 function Header() {
+  const { logout } = useContext(AuthContext);
+  const userName = "Nombre del Usuario";
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="flex justify-between items-center py-4 px-6 border-b-2 border-gray-200">
       <div className="relative w-full md:w-1/3">
@@ -10,7 +20,13 @@ function Header() {
           src="https://via.placeholder.com/150"
           alt="profile"
         />
-        <div className="text-gray-700">Undefinded</div>
+        <div className="text-gray-700">{userName}</div>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-3 py-1 rounded"
+        >
+          Cerrar Sesión
+        </button>
       </div>
     </div>
   );
