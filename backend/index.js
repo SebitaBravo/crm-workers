@@ -1,7 +1,7 @@
-const app = require('./src/app');
+import app from './src/app.js';
 
-const port = 3001; 
+const PORT = 3001;
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const usuarioController = require('../controllers/usuarioController');
+import { Router } from "express";
+import * as usuariosController from "../controllers/usuarioController";
+import { checkAuth } from "../middlewares/auth.js";
+import { checkRoleAuth } from "../middlewares/rolAuth.js";
 
-router.get('/usuarios', usuarioController.getAllUsuarios);
-router.post('/usuarios', usuarioController.createUsuario);
-router.put('/usuarios/:id', usuarioController.updateUsuario);
-router.delete('/usuarios/:id', usuarioController.deleteUsuario);
+const router = Router();
+const route = '/usuarios';
 
-module.exports = router;
+router.get(`${route}`, checkAuth, checkRoleAuth(['user', 'admin']), usuariosController.getUsuarios);
+router.post(`${route}`, checkAuth, checkRoleAuth(['admin']), usuariosController.createUsuario);
+router.put(`${route}/:id`, checkAuth, checkRoleAuth(['admin']), usuariosController.updateUsuario);
+router.delete(`${route}/:id`, checkAuth, checkRoleAuth(['admin']), usuariosController.deleteUsuario);
+
+export default router;

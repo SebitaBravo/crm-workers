@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -8,4 +8,6 @@ const pool = mysql.createPool({
   port: 8889,
 });
 
-module.exports = pool;
+const SECRET_KEY = 'tu_clave_secreta_aqui';
+
+export { pool, SECRET_KEY };

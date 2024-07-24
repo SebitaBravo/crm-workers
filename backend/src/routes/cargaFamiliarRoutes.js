@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const cargaFamiliarController = require('../controllers/cargaFamiliarController');
+import { Router } from 'express';
+import * as cargaFamiliarController from '../controllers/cargaFamiliarController.js';
+import { checkAuth } from '../middlewares/auth.js';
+import { checkRoleAuth } from '../middlewares/rolAuth.js';
 
-router.get('/cargas-familiares', cargaFamiliarController.getAllCargasFamiliares);
-router.post('/cargas-familiares', cargaFamiliarController.createCargaFamiliar);
-router.put('/cargas-familiares/:id', cargaFamiliarController.updateCargaFamiliar);
-router.delete('/cargas-familiares/:id', cargaFamiliarController.deleteCargaFamiliar);
+const router = Router();
+const route = '/carga-familiar';
 
-module.exports = router;
+router.get(`${route}`, checkAuth, checkRoleAuth(['user', 'hr', 'hrboss', 'admin']), cargaFamiliarController.getAllCargasFamiliares);
+router.post(`${route}`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), cargaFamiliarController.createCargaFamiliar);
+router.put(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), cargaFamiliarController.updateCargaFamiliar);
+router.delete(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), cargaFamiliarController.deleteCargaFamiliar);
+
+export default router;

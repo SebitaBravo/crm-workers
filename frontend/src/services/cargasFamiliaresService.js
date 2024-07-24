@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getCargaFamiliar = async () => {
     try {
-        const response = await axios.get('http://localhost:3001/api/cargas-familiares');
+        const response = await axios.get('http://localhost:3001/api/carga-familiar');
         if (response.status !== 200) {
             throw new Error('Error al obtener las cargas familiares');
         }
@@ -15,7 +15,7 @@ export const getCargaFamiliar = async () => {
 
 export const postCargaFamiliarService = async (cargaFamiliar) => {
     try {
-        const response = await axios.post('http://localhost:3001/api/cargas-familiares', cargaFamiliar);
+        const response = await axios.post('http://localhost:3001/api/carga-familiar', cargaFamiliar);
         if (response.status !== 201) {
             throw new Error('Error al agregar la carga familiar');
         }
@@ -28,7 +28,7 @@ export const postCargaFamiliarService = async (cargaFamiliar) => {
 
 export const deleteCargaFamiliarService = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:3001/api/cargas-familiares/${id}`);
+        const response = await axios.delete(`http://localhost:3001/api/carga-familiar/${id}`);
         if (response.status !== 200) {
             throw new Error('Error al eliminar la carga familiar');
         }
@@ -41,7 +41,7 @@ export const deleteCargaFamiliarService = async (id) => {
 
 export const updateCargaFamiliarService = async (cargaFamiliar) => {
     try {
-        const response = await axios.put(`http://localhost:3001/api/cargas-familiares/${cargaFamiliar.id}`, cargaFamiliar);
+        const response = await axios.put(`http://localhost:3001/api/carga-familiar/${cargaFamiliar.id}`, cargaFamiliar);
         if (response.status !== 200) {
             throw new Error('Error al actualizar la carga familiar');
         }

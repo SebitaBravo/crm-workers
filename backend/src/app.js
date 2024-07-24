@@ -1,26 +1,30 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import trabajadorRoutes from './routes/trabajadorRoutes.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
+import rolRoutes from './routes/rolRoutes.js';
+import contactoEmergenciaRoutes from './routes/contactoEmergenciaRoutes.js';
+import cargaFamiliarRoutes from './routes/cargaFamiliarRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+
 const app = express();
-const trabajadorRoutes = require('./routes/trabajadorRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
-const rolRoutes = require('./routes/rolRoutes');
-const contactoEmergenciaRoutes = require('./routes/contactoEmergenciaRoutes');
-const cargaFamiliarRoutes = require('./routes/cargaFamiliarRoutes');
-const authRoutes = require('./routes/authRoutes');
 
-app.use(cors()); 
+// Middlewares
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
+// Routes
 app.use('/api/auth', authRoutes);
-app.use('/api', trabajadorRoutes);
-app.use('/api', usuarioRoutes);
-app.use('/api', rolRoutes);
-app.use('/api', contactoEmergenciaRoutes);
-app.use('/api', cargaFamiliarRoutes);
+app.use('/api/trabajadores', trabajadorRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/roles', rolRoutes);
+app.use('/api/contacto-emergencia', contactoEmergenciaRoutes);
+app.use('/api/carga-familiar', cargaFamiliarRoutes);
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(404).send('Algo salió mal!');
+// Error Handling
+app.use((req, res) => {
+    res.status(404).json({ message: 'Endpoint not found' });
 });
 
-module.exports = app;
+export default app;

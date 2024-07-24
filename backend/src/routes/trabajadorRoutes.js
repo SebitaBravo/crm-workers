@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const trabajadorController = require('../controllers/trabajadorController');
+import { Router } from "express";
+import * as trabajadoresController from "../controllers/trabajadorController.js";
+import { checkAuth } from "../middlewares/auth.js";
+import { checkRoleAuth } from "../middlewares/rolAuth.js";
 
-router.get('/trabajadores', trabajadorController.getAllTrabajadores);
-router.post('/trabajadores', trabajadorController.createTrabajador);
-router.put('/trabajadores/:id', trabajadorController.updateTrabajador);
-router.delete('/trabajadores/:id', trabajadorController.deleteTrabajador);
+const router = Router();
+const route = '/trabajadores';
 
-module.exports = router;
+router.get(`${route}`, checkAuth, checkRoleAuth(['user', 'hr', 'hrboss', 'admin']), trabajadoresController.getTrabajadores);
+router.post(`${route}`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), trabajadoresController.createTrabajador);
+router.put(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), trabajadoresController.updateTrabajador);
+router.delete(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), trabajadoresController.deleteTrabajador);
+
+export default router;

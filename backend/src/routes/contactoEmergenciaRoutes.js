@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const contactoEmergenciaController = require('../controllers/contactoEmergenciaController');
+import { Router } from 'express';
+import * as contactoEmergenciaController from '../controllers/contactoEmergenciaController.js';
+import { checkAuth } from '../middlewares/auth.js';
+import { checkRoleAuth } from '../middlewares/rolAuth.js';
 
-router.get('/contactos-emergencia', contactoEmergenciaController.getAllContactosEmergencia);
-router.post('/contactos-emergencia', contactoEmergenciaController.createContactoEmergencia);
-router.put('/contactos-emergencia/:id', contactoEmergenciaController.updateContactoEmergencia);
-router.delete('/contactos-emergencia/:id', contactoEmergenciaController.deleteContactoEmergencia);
+const router = Router();
+const route = '/contacto-emergencia';
 
-module.exports = router;
+router.get(`${route}`, checkAuth, checkRoleAuth(['user', 'hr', 'hrboss', 'admin']), contactoEmergenciaController.getAllContactosEmergencia);
+router.post(`${route}`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), contactoEmergenciaController.createContactoEmergencia);
+router.put(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), contactoEmergenciaController.updateContactoEmergencia);
+router.delete(`${route}/:id`, checkAuth, checkRoleAuth(['hr', 'hrboss', 'admin']), contactoEmergenciaController.deleteContactoEmergencia);
+
+export default router;
