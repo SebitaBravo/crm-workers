@@ -4,36 +4,38 @@ import Header from "../Header";
 import { postCargaFamiliarService } from "../../services/cargasFamiliaresService";
 
 function FamilyForm() {
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [parentesco, setParentesco] = useState("");
-  const [sexo, setSexo] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    parentesco: "",
+    sexo: "",
+    fecha_nacimiento: "",
+  });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
-    const nuevaCargaFamiliar = {
-      nombre,
-      apellido,
-      parentesco,
-      sexo,
-      fecha_nacimiento: fechaNacimiento,
-    };
-
     try {
-      await postCargaFamiliarService(nuevaCargaFamiliar);
+      await postCargaFamiliarService(formData);
       setMessage("Carga familiar agregada exitosamente");
-      setNombre("");
-      setApellido("");
-      setParentesco("");
-      setSexo("");
-      setFechaNacimiento("");
+      setFormData({
+        nombre: "",
+        apellido: "",
+        parentesco: "",
+        sexo: "",
+        fecha_nacimiento: "",
+      });
     } catch (error) {
+      console.error("Error al agregar la carga familiar:", error);
       setError("Error al agregar la carga familiar");
     }
   };
@@ -59,9 +61,10 @@ function FamilyForm() {
                 <input
                   type="text"
                   id="nombre"
+                  name="nombre"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
+                  value={formData.nombre}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -75,9 +78,10 @@ function FamilyForm() {
                 <input
                   type="text"
                   id="apellido"
+                  name="apellido"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={apellido}
-                  onChange={(e) => setApellido(e.target.value)}
+                  value={formData.apellido}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -91,9 +95,10 @@ function FamilyForm() {
                 <input
                   type="text"
                   id="parentesco"
+                  name="parentesco"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={parentesco}
-                  onChange={(e) => setParentesco(e.target.value)}
+                  value={formData.parentesco}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -106,9 +111,10 @@ function FamilyForm() {
                 </label>
                 <select
                   id="sexo"
+                  name="sexo"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={sexo}
-                  onChange={(e) => setSexo(e.target.value)}
+                  value={formData.sexo}
+                  onChange={handleChange}
                   required
                 >
                   <option value="" disabled>
@@ -121,16 +127,17 @@ function FamilyForm() {
               <div>
                 <label
                   className="block text-left font-bold mb-1"
-                  htmlFor="fechaNacimiento"
+                  htmlFor="fecha_nacimiento"
                 >
                   Fecha de Nacimiento
                 </label>
                 <input
                   type="date"
-                  id="fechaNacimiento"
+                  id="fecha_nacimiento"
+                  name="fecha_nacimiento"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={fechaNacimiento}
-                  onChange={(e) => setFechaNacimiento(e.target.value)}
+                  value={formData.fecha_nacimiento}
+                  onChange={handleChange}
                   required
                 />
               </div>

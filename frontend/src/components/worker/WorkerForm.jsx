@@ -3,76 +3,79 @@ import { postTrabajadoresService } from "../../services/trabajadoresService";
 import { postContactoEmergenciaService } from "../../services/contactoEmergenciaService";
 
 function WorkerForm() {
-  const [rut_trabajador, setRutTrabajador] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [sexo, setSexo] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [fecha_nacimiento, setFechaNacimiento] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [fecha_ingreso, setFechaIngreso] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [salario, setSalario] = useState("");
-  const [contactoNombre, setContactoNombre] = useState("");
-  const [contactoApellido, setContactoApellido] = useState("");
-  const [contactoRelacion, setContactoRelacion] = useState("");
-  const [contactoTelefono, setContactoTelefono] = useState("");
+  const [formData, setFormData] = useState({
+    rut_trabajador: "",
+    nombre: "",
+    apellido: "",
+    sexo: "",
+    direccion: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    cargo: "",
+    fecha_ingreso: "",
+    departamento: "",
+    salario: "",
+    contactoNombre: "",
+    contactoApellido: "",
+    contactoRelacion: "",
+    contactoTelefono: "",
+  });
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
-    const nuevoTrabajador = {
-      rut_trabajador,
-      nombre,
-      apellido,
-      sexo,
-      direccion,
-      telefono,
-      fecha_nacimiento,
-      cargo,
-      fecha_ingreso,
-      departamento,
-      salario,
-    };
-
-    const nuevoContactoEmergencia = {
-      nombre: contactoNombre,
-      apellido: contactoApellido,
-      relacion: contactoRelacion,
-      telefono: contactoTelefono,
-    };
-
     try {
-      const responseTrabajador = await postTrabajadoresService(nuevoTrabajador);
+      const responseTrabajador = await postTrabajadoresService({
+        rut_trabajador: formData.rut_trabajador,
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        sexo: formData.sexo,
+        direccion: formData.direccion,
+        telefono: formData.telefono,
+        fecha_nacimiento: formData.fecha_nacimiento,
+        cargo: formData.cargo,
+        fecha_ingreso: formData.fecha_ingreso,
+        departamento: formData.departamento,
+        salario: formData.salario,
+      });
       const trabajadorId = responseTrabajador.id;
 
       await postContactoEmergenciaService({
-        ...nuevoContactoEmergencia,
+        nombre: formData.contactoNombre,
+        apellido: formData.contactoApellido,
+        relacion: formData.contactoRelacion,
+        telefono: formData.contactoTelefono,
         trabajador_id: trabajadorId,
       });
 
       setMessage("Empleado y contacto de emergencia agregados exitosamente");
-      // Resetear el formulario
-      setRutTrabajador("");
-      setNombre("");
-      setApellido("");
-      setSexo("");
-      setDireccion("");
-      setTelefono("");
-      setFechaNacimiento("");
-      setCargo("");
-      setFechaIngreso("");
-      setDepartamento("");
-      setSalario("");
-      setContactoNombre("");
-      setContactoApellido("");
-      setContactoRelacion("");
-      setContactoTelefono("");
+      setFormData({
+        rut_trabajador: "",
+        nombre: "",
+        apellido: "",
+        sexo: "",
+        direccion: "",
+        telefono: "",
+        fecha_nacimiento: "",
+        cargo: "",
+        fecha_ingreso: "",
+        departamento: "",
+        salario: "",
+        contactoNombre: "",
+        contactoApellido: "",
+        contactoRelacion: "",
+        contactoTelefono: "",
+      });
     } catch (error) {
       console.error(
         "Error al agregar el empleado o contacto de emergencia:",
@@ -98,30 +101,26 @@ function WorkerForm() {
                   {
                     label: "RUT",
                     type: "text",
-                    id: "rut_trabajador",
-                    value: rut_trabajador,
-                    onChange: setRutTrabajador,
+                    name: "rut_trabajador",
+                    value: formData.rut_trabajador,
                   },
                   {
                     label: "Nombre",
                     type: "text",
-                    id: "nombre",
-                    value: nombre,
-                    onChange: setNombre,
+                    name: "nombre",
+                    value: formData.nombre,
                   },
                   {
                     label: "Apellido",
                     type: "text",
-                    id: "apellido",
-                    value: apellido,
-                    onChange: setApellido,
+                    name: "apellido",
+                    value: formData.apellido,
                   },
                   {
                     label: "Sexo",
                     type: "select",
-                    id: "sexo",
-                    value: sexo,
-                    onChange: setSexo,
+                    name: "sexo",
+                    value: formData.sexo,
                     options: [
                       { value: "", text: "Seleccione el sexo" },
                       { value: "f", text: "Femenino" },
@@ -131,66 +130,60 @@ function WorkerForm() {
                   {
                     label: "Dirección",
                     type: "text",
-                    id: "direccion",
-                    value: direccion,
-                    onChange: setDireccion,
+                    name: "direccion",
+                    value: formData.direccion,
                   },
                   {
                     label: "Teléfono",
                     type: "text",
-                    id: "telefono",
-                    value: telefono,
-                    onChange: setTelefono,
+                    name: "telefono",
+                    value: formData.telefono,
                   },
                   {
                     label: "Fecha de Nacimiento",
                     type: "date",
-                    id: "fecha_nacimiento",
-                    value: fecha_nacimiento,
-                    onChange: setFechaNacimiento,
+                    name: "fecha_nacimiento",
+                    value: formData.fecha_nacimiento,
                   },
                   {
                     label: "Cargo",
                     type: "text",
-                    id: "cargo",
-                    value: cargo,
-                    onChange: setCargo,
+                    name: "cargo",
+                    value: formData.cargo,
                   },
                   {
                     label: "Fecha de Ingreso",
                     type: "date",
-                    id: "fecha_ingreso",
-                    value: fecha_ingreso,
-                    onChange: setFechaIngreso,
+                    name: "fecha_ingreso",
+                    value: formData.fecha_ingreso,
                   },
                   {
                     label: "Departamento",
                     type: "text",
-                    id: "departamento",
-                    value: departamento,
-                    onChange: setDepartamento,
+                    name: "departamento",
+                    value: formData.departamento,
                   },
                   {
                     label: "Salario",
                     type: "number",
-                    id: "salario",
-                    value: salario,
-                    onChange: setSalario,
+                    name: "salario",
+                    value: formData.salario,
                   },
-                ].map(({ label, type, id, value, onChange, options }) => (
-                  <div key={id}>
+                ].map(({ label, type, name, value, options }) => (
+                  <div key={name}>
                     <label
                       className="block text-left font-bold mb-1"
-                      htmlFor={id}
+                      htmlFor={name}
                     >
                       {label}
                     </label>
                     {type === "select" ? (
                       <select
-                        id={id}
+                        id={name}
+                        name={name}
                         className="w-full p-2 border border-gray-300 rounded"
                         value={value}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={handleChange}
                         required
                       >
                         {options.map(({ value, text }) => (
@@ -206,10 +199,11 @@ function WorkerForm() {
                     ) : (
                       <input
                         type={type}
-                        id={id}
+                        id={name}
+                        name={name}
                         className="w-full p-2 border border-gray-300 rounded"
                         value={value}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={handleChange}
                         required
                       />
                     )}
@@ -225,52 +219,48 @@ function WorkerForm() {
                     {
                       label: "Nombre del Contacto",
                       type: "text",
-                      id: "contacto_nombre",
-                      value: contactoNombre,
-                      onChange: setContactoNombre,
+                      name: "contactoNombre",
+                      value: formData.contactoNombre,
                     },
                     {
                       label: "Apellido del Contacto",
                       type: "text",
-                      id: "contacto_apellido",
-                      value: contactoApellido,
-                      onChange: setContactoApellido,
+                      name: "contactoApellido",
+                      value: formData.contactoApellido,
                     },
                     {
                       label: "Relación",
                       type: "text",
-                      id: "contacto_relacion",
-                      value: contactoRelacion,
-                      onChange: setContactoRelacion,
+                      name: "contactoRelacion",
+                      value: formData.contactoRelacion,
                     },
                     {
                       label: "Teléfono del Contacto",
                       type: "text",
-                      id: "contacto_telefono",
-                      value: contactoTelefono,
-                      onChange: setContactoTelefono,
+                      name: "contactoTelefono",
+                      value: formData.contactoTelefono,
                     },
-                  ].map(({ label, type, id, value, onChange }) => (
-                    <div key={id}>
+                  ].map(({ label, type, name, value }) => (
+                    <div key={name}>
                       <label
                         className="block text-left font-bold mb-1"
-                        htmlFor={id}
+                        htmlFor={name}
                       >
                         {label}
                       </label>
                       <input
                         type={type}
-                        id={id}
+                        id={name}
+                        name={name}
                         className="w-full p-2 border border-gray-300 rounded"
                         value={value}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={handleChange}
                         required
                       />
                     </div>
                   ))}
                 </div>
               </div>
-
               <button
                 type="submit"
                 className="w-full p-2 bg-purple-600 text-white rounded hover:bg-purple-700"

@@ -5,7 +5,7 @@ import FamilyForm from "../components/worker/FamilyForm";
 
 function WorkerPage() {
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen">
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Header />
